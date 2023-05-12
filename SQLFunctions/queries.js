@@ -70,6 +70,33 @@ const insertNewProduct = (name, description, price, quantity) => {
         });
     });
 }
+
+const favorateProduct = (id, favorate) => {
+    return new Promise((resolve, reject) => {
+        sql.connect(config, function (err) {
+            if (err) {
+                reject(err);
+            } else {
+                const query = `UPDATE products SET 
+                        favorate = @favorate
+                        WHERE ID = @id;`;
+                const request = new sql.Request();
+                request.input('favorate', sql.Int, favorate);
+                request.input('id', sql.Int, id);
+                request.query(query, function (error, results) {
+                    console.log(id, favorate)
+
+                    if (error) {
+                        console.error('Error executing query:', error);
+                        reject(error);
+                    } else {
+                        resolve(`Favorted ${id} successfully`);
+                    }
+                });
+            }
+        });
+    });
+}
 const updateProduct = (id, name, description, price, quantity) => {
     return new Promise((resolve, reject) => {
         sql.connect(config, function (err) {
@@ -124,6 +151,29 @@ const deleteProduct = (id) => {
     });
 };
 
+const getUser = (username, password) => {
+    return new Promise((resolve, reject) => {
+        sql.connect(config, function (err) {
+            if (err) {
+                reject(err);
+            } else {
+                const query = "SELECT * FROM auth WHERE username = @username and password = @password";
+                new sql.Request()
+                    .input("username", sql.VarChar, username)
+                    .input("password", sql.VarChar, password)
+                    .query(query, function (error, results) {
+                        if (error) {
+                            console.error('Error executing query:', error);
+                            reject(error);
+                        } else {
+                            resolve(results.recordset[0]);
+                        }
+                    });
+            }
+        });
+    });
+}
 
 
-module.exports = { getProds, getProdsById, insertNewProduct, updateProduct, deleteProduct };
+
+module.exports = { getProds, getProdsById, insertNewProduct, updateProduct, deleteProduct, favorateProduct, getUser };
