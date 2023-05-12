@@ -173,7 +173,29 @@ const getUser = (username, password) => {
         });
     });
 }
+const deleteUser = (username, password) => {
+    return new Promise((resolve, reject) => {
+        sql.connect(config, function (err) {
+            if (err) {
+                reject(err);
+            } else {
+                const query = "DELETE FROM auth WHERE username = @username and password = @password";
+                new sql.Request()
+                    .input("username", sql.VarChar, username)
+                    .input("password", sql.VarChar, password)
+                    .query(query, function (error, results) {
+                        if (error) {
+                            console.error('Error executing query:', error);
+                            reject(error);
+                        } else {
+                            resolve(results.rowsAffected[0]);
+                        }
+                    });
+            }
+        });
+    });
+}
 
 
 
-module.exports = { getProds, getProdsById, insertNewProduct, updateProduct, deleteProduct, favorateProduct, getUser };
+module.exports = { getProds, getProdsById, insertNewProduct, updateProduct, deleteProduct, favorateProduct, getUser, deleteUser };
