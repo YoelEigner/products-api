@@ -1,6 +1,6 @@
 # Products API
 
-The Products API is a RESTful API for managing product data. It provides endpoints for creating, reading, updating, and deleting product records. The API is built using Node.js and the Express.js framework, and it uses a SQL database to store product data.
+The Products API is a RESTful API for managing product data. It provides endpoints for creating, reading, updating, and deleting product records as well as user authentication endpoints. The API is built using Node.js and the Express.js framework, and it uses a SQL database to store product data.
 
 ## Getting Started
 
